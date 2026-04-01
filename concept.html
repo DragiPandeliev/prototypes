@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veraply — Know which roles are worth your time</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --paper: #faf9f7;
+    --warm: #f5f0ea;
+    --accent: #c85d3a;
+    --accent-light: #f0d4c8;
+    --accent-dark: #a84828;
+    --muted: #8a8580;
+    --green: #3a7a5c;
+    --green-light: #e8f4ed;
+    --amber: #b8860b;
+    --amber-light: #fdf3dc;
+    --red: #c0392b;
+    --red-light: #fce8e6;
+    --border: #e5e0da;
+    --radius: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Navigation ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(250, 249, 247, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  .nav-cta {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--accent-dark); }
+
+  /* ── Sections ── */
+  section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding-top: 140px;
+    padding-bottom: 80px;
+    text-align: center;
+    max-width: 720px;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent-dark);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    letter-spacing: 0.3px;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(34px, 5.5vw, 52px);
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+  }
+
+  .hero h1 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .hero p {
+    font-size: 19px;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 40px;
+    line-height: 1.65;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 14px 36px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .hero-cta:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+  /* ── Problem ── */
+  .problem {
+    padding: 80px 28px;
+    max-width: 800px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .problem h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 36px;
+    letter-spacing: -0.5px;
+  }
+
+  .pain-cards {
+    display: grid;
+    gap: 16px;
+  }
+
+  .pain-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.5s ease;
+  }
+  .pain-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .pain-icon {
+    font-size: 26px;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: var(--warm);
+  }
+
+  .pain-card h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .pain-card p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── Demo / How it works ── */
+  .demo {
+    padding: 80px 28px 60px;
+    max-width: 800px;
+  }
+
+  .demo h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+
+  .demo > p {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+
+  /* Interactive demo */
+  .demo-container {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+  }
+
+  .demo-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--warm);
+  }
+
+  .demo-tab {
+    flex: 1;
+    padding: 14px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .demo-tab.active {
+    color: var(--accent);
+    background: white;
+  }
+  .demo-tab .step-num {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 22px;
+    text-align: center;
+    margin-right: 6px;
+    font-weight: 700;
+    transition: all 0.25s;
+  }
+  .demo-tab.active .step-num {
+    background: var(--accent);
+    color: white;
+  }
+
+  .demo-panel {
+    display: none;
+    padding: 32px;
+    min-height: 380px;
+    animation: fadePanel 0.35s ease;
+  }
+  .demo-panel.active { display: block; }
+
+  @keyframes fadePanel {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Step 1: Upload */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .upload-zone:hover { border-color: var(--accent); background: rgba(200, 93, 58, 0.03); }
+  .upload-zone .icon { font-size: 36px; margin-bottom: 10px; }
+  .upload-zone p { color: var(--muted); font-size: 15px; }
+  .upload-zone .upload-label { font-weight: 600; color: var(--ink); font-size: 16px; display: block; margin-bottom: 4px; }
+
+  .jd-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .jd-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .jd-input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .jd-input:focus { border-color: var(--accent); }
+  .jd-status {
+    font-size: 12px;
+    width: 20px;
+    text-align: center;
+  }
+
+  .analyze-btn {
+    margin-top: 16px;
+    width: 100%;
+    padding: 13px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .analyze-btn:hover { background: var(--accent-dark); }
+
+  .privacy-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 12px;
+  }
+  .privacy-note strong { color: var(--ink); }
+
+  /* Step 2: Results */
+  .results-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .result-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .result-card:hover { border-color: var(--accent); box-shadow: 0 2px 12px rgba(200,93,58,0.08); }
+
+  .score-ring {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .score-high { background: var(--green-light); color: var(--green); }
+  .score-mid { background: var(--amber-light); color: var(--amber); }
+  .score-low { background: var(--red-light); color: var(--red); }
+
+  .result-info { flex: 1; }
+  .result-info h4 { font-size: 15px; margin-bottom: 3px; }
+  .result-info .company { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+
+  .gap-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .gap-tag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+  .gap-tag.strength { background: var(--green-light); color: var(--green); }
+  .gap-tag.gap { background: var(--amber-light); color: var(--amber); }
+  .gap-tag.missing { background: var(--red-light); color: var(--red); }
+
+  .result-verdict {
+    font-size: 13px;
+    font-weight: 500;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+  .verdict-strong { color: var(--green); }
+  .verdict-ok { color: var(--amber); }
+
+  .result-action {
+    align-self: center;
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .result-action:hover { background: var(--accent); color: white; }
+
+  /* Step 3: Cover letter + verification */
+  .doc-gen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 640px) {
+    .doc-gen { grid-template-columns: 1fr; }
+  }
+
+  .doc-panel {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .doc-panel-header {
+    padding: 14px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .doc-panel-header.letter-header { background: var(--paper); }
+  .doc-panel-header.verify-header { background: var(--green-light); color: var(--green); }
+
+  .doc-content {
+    padding: 18px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #444;
+    max-height: 340px;
+    overflow-y: auto;
+  }
+
+  .doc-content p { margin-bottom: 12px; }
+
+  .claim-line {
+    position: relative;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .claim-verified {
+    background: var(--green-light);
+    border-left: 3px solid var(--green);
+  }
+  .claim-source {
+    font-size: 11px;
+    color: var(--green);
+    font-weight: 500;
+    display: block;
+    margin-top: 2px;
+  }
+  .claim-flagged {
+    background: var(--amber-light);
+    border-left: 3px solid var(--amber);
+  }
+  .claim-flag-note {
+    font-size: 11px;
+    color: var(--amber);
+    font-weight: 500;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* ── Tailored CV ── */
+  .cv-line {
+    padding: 7px 12px;
+    border-radius: 6px;
+    margin-bottom: 3px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .cv-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .cv-unchanged {
+    color: #666;
+  }
+  .cv-emphasised {
+    background: var(--green-light);
+    border-left: 3px solid var(--green);
+  }
+  .cv-reframed {
+    background: var(--amber-light);
+    border-left: 3px solid var(--amber);
+  }
+  .cv-change-note {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 12px 6px 24px;
+    margin-bottom: 6px;
+  }
+  .cv-change-green { color: var(--green); }
+  .cv-change-amber { color: var(--amber); }
+
+  /* ── The Difference ── */
+  .difference {
+    padding: 80px 28px;
+    max-width: 800px;
+  }
+
+  .difference h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+  }
+
+  .difference > p {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 36px;
+    max-width: 560px;
+  }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) {
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+
+  .compare-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    background: white;
+  }
+  .compare-card.them { }
+  .compare-card.us { border-color: var(--accent); background: rgba(200, 93, 58, 0.02); }
+
+  .compare-card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .compare-item {
+    font-size: 14px;
+    padding: 5px 0;
+    color: #555;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+  .compare-item .ci { flex-shrink: 0; font-size: 14px; }
+
+  /* ── CTA / Signup ── */
+  .cta-section {
+    padding: 80px 28px 100px;
+    max-width: 800px;
+    text-align: center;
+  }
+
+  .cta-box {
+    background: white;
+    border: 2px solid var(--accent);
+    border-radius: 16px;
+    padding: 48px 36px;
+  }
+
+  .cta-box h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+
+  .cta-box p {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 28px;
+    max-width: 440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .feedback-questions {
+    text-align: left;
+    max-width: 460px;
+    margin: 0 auto 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .fq {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .fq label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .fq-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .fq-option {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    background: white;
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .fq-option:hover { border-color: var(--accent); }
+  .fq-option.selected {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  .email-row {
+    display: flex;
+    gap: 10px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .email-input {
+    flex: 1;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .email-input:focus { border-color: var(--accent); }
+
+  .submit-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 13px 24px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .submit-btn:hover { background: var(--accent-dark); }
+
+  .thanks-msg {
+    display: none;
+    text-align: center;
+    padding: 20px;
+  }
+  .thanks-msg h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--green);
+    margin-bottom: 8px;
+  }
+  .thanks-msg p {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 32px;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── Utility ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+  }
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 520px) {
+    .demo-tab { font-size: 11px; padding: 12px 6px; }
+    .demo-tab .step-num { display: none; }
+    .demo-panel { padding: 20px; }
+    .doc-gen { grid-template-columns: 1fr; }
+    .email-row { flex-direction: column; }
+    nav { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Veraply</div>
+  <button class="nav-cta" onclick="document.getElementById('signup').scrollIntoView({behavior:'smooth'})">Get early access</button>
+</nav>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <h1>Know which roles are <em>worth your time</em> before you apply</h1>
+  <p>Upload your CV, paste a few job descriptions, and get a scored list — with gap analysis, tailored CVs and cover letters per role, and proof that nothing was invented.</p>
+  <a href="#demo" class="hero-cta">See how it works ↓</a>
+</section>
+
+<!-- ══════ PROBLEM ══════ -->
+<section class="problem">
+  <div class="section-label">The problem</div>
+  <h2>You're qualified. Your CV doesn't show it — and you can't tell which roles are actually realistic.</h2>
+
+  <div class="pain-cards">
+    <div class="pain-card" data-delay="0">
+      <div class="pain-icon">🎯</div>
+      <div>
+        <h3>No way to prioritize</h3>
+        <p>You see 15 open roles. Some are strong matches, some are a stretch. You can't tell which without reading every JD line by line against your CV.</p>
+      </div>
+    </div>
+    <div class="pain-card" data-delay="120">
+      <div class="pain-icon">🔄</div>
+      <div>
+        <h3>Tailoring is manual and slow</h3>
+        <p>Each application needs a different emphasis. You spend hours tweaking bullet points by gut feel, unsure if you're highlighting the right things.</p>
+      </div>
+    </div>
+    <div class="pain-card" data-delay="240">
+      <div class="pain-icon">🤖</div>
+      <div>
+        <h3>AI tools you can't trust</h3>
+        <p>ChatGPT will write you a cover letter. It'll also invent skills you don't have. You can't send a document you haven't verified line by line yourself.</p>
+      </div>
+    </div>
+    <div class="pain-card" data-delay="360">
+      <div class="pain-icon">📉</div>
+      <div>
+        <h3>No feedback loop</h3>
+        <p>You apply to 20 roles, get 1 callback. Was the CV wrong? The targeting? No way to know, so you can't improve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ DEMO ══════ -->
+<section class="demo" id="demo">
+  <div class="section-label">How Veraply works</div>
+  <h2>One CV. Multiple roles. Scored in seconds.</h2>
+  <p>Click through each step to see the experience.</p>
+
+  <div class="demo-container">
+    <div class="demo-tabs">
+      <button class="demo-tab active" onclick="showTab(0)"><span class="step-num">1</span>Upload</button>
+      <button class="demo-tab" onclick="showTab(1)"><span class="step-num">2</span>Ranked results</button>
+      <button class="demo-tab" onclick="showTab(2)"><span class="step-num">3</span>Tailored CV</button>
+      <button class="demo-tab" onclick="showTab(3)"><span class="step-num">4</span>Cover letter</button>
+      <button class="demo-tab" onclick="showTab(4)"><span class="step-num">5</span>Verification</button>
+    </div>
+
+    <!-- TAB 1: Upload -->
+    <div class="demo-panel active" id="panel-0">
+      <div class="upload-zone" onclick="simulateUpload(this)">
+        <div class="icon">📄</div>
+        <span class="upload-label">Upload your CV</span>
+        <p>PDF or DOCX — parsed instantly, never stored</p>
+      </div>
+
+      <div class="jd-inputs">
+        <div class="jd-row">
+          <input class="jd-input" value="Senior Backend Engineer — Spotify" readonly>
+          <span class="jd-status">✅</span>
+        </div>
+        <div class="jd-row">
+          <input class="jd-input" value="Staff Engineer — Stripe" readonly>
+          <span class="jd-status">✅</span>
+        </div>
+        <div class="jd-row">
+          <input class="jd-input" value="Engineering Manager — Datadog" readonly>
+          <span class="jd-status">✅</span>
+        </div>
+        <div class="jd-row">
+          <input class="jd-input" value="Platform Lead — Klarna" readonly>
+          <span class="jd-status">✅</span>
+        </div>
+        <div class="jd-row">
+          <input class="jd-input" placeholder="Paste another JD or URL..." readonly>
+          <span class="jd-status" style="color: var(--muted);">+</span>
+        </div>
+      </div>
+
+      <button class="analyze-btn" onclick="showTab(1)">Analyze all roles →</button>
+      <div class="privacy-note"><strong>No account needed.</strong> Your data is deleted immediately after processing.</div>
+    </div>
+
+    <!-- TAB 2: Ranked results -->
+    <div class="demo-panel" id="panel-1">
+      <div class="results-list">
+        <div class="result-card" onclick="showTab(2)">
+          <div class="score-ring score-high">87</div>
+          <div class="result-info">
+            <h4>Senior Backend Engineer</h4>
+            <div class="company">Spotify · Stockholm</div>
+            <div class="gap-tags">
+              <span class="gap-tag strength">Java ✓</span>
+              <span class="gap-tag strength">Microservices ✓</span>
+              <span class="gap-tag strength">System design ✓</span>
+              <span class="gap-tag gap">Kafka — learnable</span>
+            </div>
+            <div class="result-verdict verdict-strong">Strong match — 1 gap, easily bridgeable. Apply.</div>
+          </div>
+          <button class="result-action">Tailor CV →</button>
+        </div>
+
+        <div class="result-card">
+          <div class="score-ring score-high">79</div>
+          <div class="result-info">
+            <h4>Platform Lead</h4>
+            <div class="company">Klarna · Berlin</div>
+            <div class="gap-tags">
+              <span class="gap-tag strength">Architecture ✓</span>
+              <span class="gap-tag strength">Leadership ✓</span>
+              <span class="gap-tag gap">Kubernetes — frameable</span>
+              <span class="gap-tag gap">FinTech domain</span>
+            </div>
+            <div class="result-verdict verdict-strong">Good match — 2 gaps, both addressable in cover letter.</div>
+          </div>
+          <button class="result-action">Generate letter →</button>
+        </div>
+
+        <div class="result-card">
+          <div class="score-ring score-mid">64</div>
+          <div class="result-info">
+            <h4>Engineering Manager</h4>
+            <div class="company">Datadog · Paris</div>
+            <div class="gap-tags">
+              <span class="gap-tag strength">People mgmt ✓</span>
+              <span class="gap-tag gap">Observability domain</span>
+              <span class="gap-tag missing">Go — not in CV</span>
+            </div>
+            <div class="result-verdict verdict-ok">Moderate match — strong on leadership, but technical stack gap. Stretch role.</div>
+          </div>
+          <button class="result-action">Generate letter →</button>
+        </div>
+
+        <div class="result-card">
+          <div class="score-ring score-mid">58</div>
+          <div class="result-info">
+            <h4>Staff Engineer</h4>
+            <div class="company">Stripe · Dublin</div>
+            <div class="gap-tags">
+              <span class="gap-tag strength">API design ✓</span>
+              <span class="gap-tag missing">Ruby — not in CV</span>
+              <span class="gap-tag missing">Payments domain</span>
+            </div>
+            <div class="result-verdict verdict-ok">Below threshold — two domain gaps. Consider only if genuinely interested in pivoting.</div>
+          </div>
+          <button class="result-action">Generate letter →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Tailored CV -->
+    <div class="demo-panel" id="panel-2">
+      <div style="margin-bottom: 14px;">
+        <strong style="font-size: 14px;">Tailored CV</strong>
+        <span style="font-size: 13px; color: var(--muted);"> — rewritten for Senior Backend Engineer, Spotify</span>
+      </div>
+      <div style="display: flex; gap: 6px; margin-bottom: 18px;">
+        <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 10px; border-radius: 20px; background: var(--green-light); color: var(--green); font-weight: 500;">● Emphasised for this role</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 10px; border-radius: 20px; background: var(--amber-light); color: var(--amber); font-weight: 500;">● Reframed</span>
+        <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 10px; border-radius: 20px; background: var(--paper); color: var(--muted); font-weight: 500; border: 1px solid var(--border);">● Unchanged</span>
+      </div>
+
+      <div class="doc-panel">
+        <div class="doc-panel-header letter-header">📄 Marcus_CV_Spotify.pdf</div>
+        <div class="doc-content">
+          <div class="cv-line cv-unchanged"><span class="cv-section-title">MARCUS WEBER</span></div>
+          <div class="cv-line cv-unchanged">Senior Software Engineer · Berlin, Germany</div>
+
+          <div class="cv-line cv-unchanged" style="margin-top: 16px;"><span class="cv-section-title">SUMMARY</span></div>
+          <div class="cv-line cv-emphasised">Backend engineer with 8 years of experience designing and scaling <strong>high-throughput distributed systems in Java</strong>. Track record of reducing latency in critical pipelines and leading cross-team platform migrations at scale.</div>
+          <div class="cv-change-note cv-change-green">↑ Rewritten to lead with distributed systems and Java — the top 2 signals in this JD.</div>
+
+          <div class="cv-line cv-unchanged" style="margin-top: 16px;"><span class="cv-section-title">EXPERIENCE</span></div>
+          <div class="cv-line cv-unchanged"><strong>[Company] · Senior Software Engineer</strong> · 2021–2025</div>
+
+          <div class="cv-line cv-emphasised">• Led redesign of order processing pipeline serving <strong>12M daily transactions</strong>; migrated from monolithic architecture to <strong>event-driven microservices</strong>, reducing p99 latency from 340ms to 85ms.</div>
+          <div class="cv-change-note cv-change-green">↑ Moved from page 2 to first bullet — directly matches JD's "own critical backend systems at scale".</div>
+
+          <div class="cv-line cv-emphasised">• Drove cross-team platform migration across <strong>4 engineering teams (18 engineers)</strong>, defining API contracts and coordinating rollout with zero downtime.</div>
+          <div class="cv-change-note cv-change-green">↑ Added team size — matches JD's "collaborative, autonomous engineering culture."</div>
+
+          <div class="cv-line cv-reframed">• Built real-time event streaming infrastructure using RabbitMQ, processing 2M+ events/day with guaranteed delivery — <strong>architecture directly transferable to Kafka-based systems</strong>.</div>
+          <div class="cv-change-note cv-change-amber">↑ Original: "Implemented RabbitMQ messaging layer." Reframed to bridge the Kafka gap identified in your analysis.</div>
+
+          <div class="cv-line cv-unchanged">• Designed and maintained CI/CD pipelines for 12 microservices, reducing deploy time from 45min to 8min.</div>
+
+          <div class="cv-line cv-unchanged" style="margin-top: 10px;"><strong>[Company] · Software Engineer</strong> · 2017–2021</div>
+          <div class="cv-line cv-unchanged">• Built REST APIs handling 50K requests/sec for customer-facing e-commerce platform.</div>
+          <div class="cv-line cv-unchanged">• Implemented database sharding strategy that reduced query latency by 60%.</div>
+
+          <div class="cv-line cv-unchanged" style="margin-top: 16px;"><span class="cv-section-title">SKILLS</span></div>
+          <div class="cv-line cv-reframed"><strong>Java, Spring Boot, Microservices, Event-driven architecture, RabbitMQ,</strong> PostgreSQL, Redis, Docker, Kubernetes, AWS, CI/CD, System design</div>
+          <div class="cv-change-note cv-change-amber">↑ Reordered: JD-relevant skills moved to the front. No skills removed or invented.</div>
+        </div>
+      </div>
+
+      <div style="background: var(--green-light); border-radius: var(--radius); padding: 14px 18px; font-size: 13px; color: var(--green); line-height: 1.6; margin-top: 14px;">
+        <strong>Every change is based on your real CV.</strong> Nothing added that isn't already there — only reordered, emphasised, and reframed for this specific role.
+      </div>
+
+      <div style="text-align: center; margin-top: 16px;">
+        <button class="analyze-btn" style="max-width: 300px;" onclick="showTab(3)">See cover letter →</button>
+      </div>
+    </div>
+
+    <!-- TAB 4: Cover letter -->
+    <div class="demo-panel" id="panel-3">
+      <div style="margin-bottom: 14px;">
+        <strong style="font-size: 14px;">Generated cover letter</strong>
+        <span style="font-size: 13px; color: var(--muted);"> — Senior Backend Engineer, Spotify</span>
+      </div>
+      <div class="doc-panel">
+        <div class="doc-panel-header letter-header">📝 Cover Letter</div>
+        <div class="doc-content">
+          <p>Dear Hiring Team,</p>
+          <p>I'm writing to express my interest in the Senior Backend Engineer role at Spotify. With eight years of experience building and scaling high-throughput distributed systems in Java, I believe my background aligns closely with what you're looking for.</p>
+          <p>At my previous company, I led the redesign of an order processing pipeline serving 12M daily transactions, migrating from a monolithic architecture to event-driven microservices and reducing p99 latency from 340ms to 85ms. This directly maps to Spotify's need for engineers who can own critical backend systems at scale.</p>
+          <p>My experience with cross-team technical leadership — I drove a platform migration across 4 engineering teams and 18 engineers, defining API contracts and coordinating rollout with zero downtime — has prepared me for the collaborative, autonomous engineering culture Spotify describes.</p>
+          <p>While I haven't worked with Kafka directly, I've built comparable event streaming infrastructure using RabbitMQ — processing 2M+ events per day with guaranteed delivery — and I'm confident in my ability to ramp up quickly on Kafka's ecosystem.</p>
+          <p>I'd welcome the opportunity to discuss how my experience can contribute to Spotify's backend infrastructure.</p>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 16px;">
+        <button class="analyze-btn" style="max-width: 300px;" onclick="showTab(4)">See verification report →</button>
+      </div>
+    </div>
+
+    <!-- TAB 5: Verification -->
+    <div class="demo-panel" id="panel-4">
+      <div style="margin-bottom: 14px;">
+        <strong style="font-size: 14px;">Verification report</strong>
+        <span style="font-size: 13px; color: var(--muted);"> — every claim traced to your CV</span>
+      </div>
+
+      <div class="doc-panel" style="margin-bottom: 16px;">
+        <div class="doc-panel-header verify-header">✓ Verification Report</div>
+        <div class="doc-content">
+          <div class="claim-line claim-verified">
+            "eight years of experience building and scaling high-throughput distributed systems in Java"
+            <span class="claim-source">↳ Verified — CV Summary: "Backend engineer with 8 years of experience designing and scaling high-throughput distributed systems in Java" + Experience: 2017–2025 (8 years)</span>
+          </div>
+
+          <div class="claim-line claim-verified">
+            "order processing pipeline serving 12M daily transactions"
+            <span class="claim-source">↳ Verified — CV Experience bullet 1: "Led redesign of order processing pipeline serving 12M daily transactions"</span>
+          </div>
+
+          <div class="claim-line claim-verified">
+            "migrating from a monolithic architecture to event-driven microservices, reducing p99 latency from 340ms to 85ms"
+            <span class="claim-source">↳ Verified — CV Experience bullet 1: "migrated from monolithic architecture to event-driven microservices, reducing p99 latency from 340ms to 85ms"</span>
+          </div>
+
+          <div class="claim-line claim-verified">
+            "platform migration across 4 engineering teams and 18 engineers, defining API contracts and coordinating rollout with zero downtime"
+            <span class="claim-source">↳ Verified — CV Experience bullet 2: "Drove cross-team platform migration across 4 engineering teams (18 engineers), defining API contracts and coordinating rollout with zero downtime"</span>
+          </div>
+
+          <div class="claim-line claim-verified">
+            "built comparable event streaming infrastructure using RabbitMQ"
+            <span class="claim-source">↳ Verified — CV Experience bullet 3: "Built real-time event streaming infrastructure using RabbitMQ, processing 2M+ events/day with guaranteed delivery"</span>
+          </div>
+
+          <div class="claim-line claim-verified">
+            "collaborative, autonomous engineering culture Spotify describes"
+            <span class="claim-source">↳ Verified — JD requirement: "Thrive in a collaborative, autonomous engineering culture." Matched to CV bullets 1–2 demonstrating cross-team leadership and independent ownership of critical systems.</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: var(--green-light); border-radius: var(--radius); padding: 16px 20px; font-size: 14px; color: var(--green); line-height: 1.6;">
+        <strong>6 of 6 claims verified.</strong> Every line in this cover letter traces back to your real CV or to a specific JD requirement. Nothing was invented.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ DIFFERENCE ══════ -->
+<section class="difference fade-in">
+  <div class="section-label">Why this is different</div>
+  <h2>Other tools generate. Veraply verifies.</h2>
+  <p>Every AI CV tool can write a cover letter. None of them prove it's true.</p>
+
+  <div class="compare-grid">
+    <div class="compare-card them">
+      <h3>🔵 Typical AI tools</h3>
+      <div class="compare-item"><span class="ci">→</span> One role at a time</div>
+      <div class="compare-item"><span class="ci">→</span> No scoring or prioritization</div>
+      <div class="compare-item"><span class="ci">→</span> Generic keyword matching</div>
+      <div class="compare-item"><span class="ci">→</span> Generated content — trust it or don't</div>
+      <div class="compare-item"><span class="ci">→</span> No way to know what's real</div>
+    </div>
+    <div class="compare-card us">
+      <h3 style="color: var(--accent);">🟠 Veraply</h3>
+      <div class="compare-item"><span class="ci">✓</span> Score multiple roles in one session</div>
+      <div class="compare-item"><span class="ci">✓</span> Prioritized apply list — best matches first</div>
+      <div class="compare-item"><span class="ci">✓</span> Gap analysis: missing skill vs. poor framing</div>
+      <div class="compare-item"><span class="ci">✓</span> Tailored CV per role — reframed, not rewritten</div>
+      <div class="compare-item"><span class="ci">✓</span> Tailored cover letter per role</div>
+      <div class="compare-item"><span class="ci">✓</span> <strong>Verification report on every document</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CTA ══════ -->
+<section class="cta-section" id="signup">
+  <div class="cta-box">
+    <h2>Would you use this?</h2>
+    <p>I'm building this solo and your honest opinion shapes what gets built. Takes 2 minutes.</p>
+
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTy_G2SNMy9m0twLVuXWaZenqZkzPVh2n13J5bia9OcD9hRw/viewform?usp=dialog" target="_blank" rel="noopener" class="hero-cta" style="display: inline-block; margin-bottom: 16px;">Share your feedback →</a>
+
+    <p style="font-size: 13px; color: var(--muted); max-width: 380px; margin: 0 auto;">Opens a short Google Form. Leave your email there if you want early access when it launches.</p>
+  </div>
+</section>
+
+<footer>
+  Veraply — built by a solo engineer who got tired of the same job search pain. 🇪🇺 EU data only.
+</footer>
+
+<script>
+  // Tab switching
+  function showTab(idx) {
+    document.querySelectorAll('.demo-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+    document.querySelectorAll('.demo-panel').forEach((p, i) => {
+      p.classList.toggle('active', i === idx);
+      if (i === idx) {
+        p.style.animation = 'none';
+        p.offsetHeight;
+        p.style.animation = '';
+      }
+    });
+  }
+
+  // Simulate upload
+  function simulateUpload(el) {
+    el.innerHTML = '<div class="icon">✅</div><span class="upload-label">marcus_cv_2026.pdf</span><p style="color: var(--green);">Parsed successfully — 47 lines extracted</p>';
+    el.style.borderColor = 'var(--green)';
+    el.style.background = 'var(--green-light)';
+    el.style.cursor = 'default';
+  }
+
+  // Intersection observer for animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target.classList.contains('pain-card')) {
+          const delay = parseInt(entry.target.dataset.delay) || 0;
+          setTimeout(() => entry.target.classList.add('visible'), delay);
+        } else {
+          entry.target.classList.add('visible');
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.pain-card, .fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
